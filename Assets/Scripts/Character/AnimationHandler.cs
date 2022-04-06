@@ -14,10 +14,10 @@ namespace Character
             animator = GetComponent<Animator>();
         }
 
-        public virtual void UpdateLocomotion(Vector3 moveDirection)
+        public virtual void UpdateLocomotion(float moveAmount)
         {
-            animator.SetFloat(Vertical, moveDirection.y);
-            animator.SetFloat(Horizontal, moveDirection.x);
+           
+            animator.SetFloat(Vertical, Mathf.Abs(moveAmount));
 
         }
     }
