@@ -1,4 +1,5 @@
 using System;
+using Character.Player;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -9,11 +10,12 @@ namespace Character
 		#region Variables
 
 		private InputControls inputActions;
+		private PlayerLocomotion playerLocomotion;
 		public Vector2 movementInput;
-		public float verticalInput{get; private set; }
-		public float horizontalInput{get; private set; }
-		public float mouseX {get; private set; }
-		public float mouseY {get; private set; }
+		public float verticalInput { get; private set; }
+		public float horizontalInput { get; private set; }
+		public float mouseX { get; private set; }
+		public float mouseY { get; private set; }
 		private Vector2 cameraInput;
 
 		public bool inputA { get; private set; }
@@ -25,6 +27,7 @@ namespace Character
 
 		private void OnEnable()
 		{
+			playerLocomotion = GetComponent<PlayerLocomotion>();
 			inputActions ??= new InputControls();
 			inputActions.Enable();
 			inputActions.Movement.Movement.performed +=
@@ -42,6 +45,16 @@ namespace Character
 		private void Update()
 		{
 			MovementInput();
+			AInput();
+		}
+
+		private void AInput()
+		{
+			if (inputA)
+			{
+				playerLocomotion.HandleJump();
+				inputA = false;
+			}
 		}
 
 		private void LateUpdate()

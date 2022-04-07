@@ -18,6 +18,8 @@ public class PlayerCameraController : MonoBehaviour
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
+
+        Cursor.visible = false;
     }
 
     private void LateUpdate()
