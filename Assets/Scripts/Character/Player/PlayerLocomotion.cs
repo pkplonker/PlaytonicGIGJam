@@ -18,6 +18,7 @@ namespace Character.Player
 		[SerializeField] private float fallMultiplier = 1;
 		[SerializeField] private float airSpeed = 4;
 
+		[SerializeField] private Transform forwardCheckLocation;
 
 		[SerializeField] private Transform groundCheckLocation;
 		private InputHandler inputHandler;
@@ -115,6 +116,12 @@ namespace Character.Player
 			//rb.velocity += Vector3.up * jumpForce; 
 			lastYVelocity = -1;
 			lastYVelocity += jumpForce;
+			Debug.DrawRay(forwardCheckLocation.position, transform.forward*0.4f, Color.red,0.1f);
+			if (Physics.Raycast(forwardCheckLocation.position, transform.forward, 0.4f))
+			{
+				rb.velocity = new Vector3(0, lastYVelocity, 0);
+				animationHandler.UpdateLocomotion(0);
+			}
 			if (!animationHandler.animator.GetBool("isJumping"))
 			{
 				animationHandler.animator.SetBool("isJumping", true);
@@ -153,9 +160,14 @@ namespace Character.Player
 
 			moveDirection = Vector3.ProjectOnPlane(moveDirection, normalVector);
 			//rb.velocity = moveDirection;
-			rb.velocity = new Vector3(moveDirection.x, lastYVelocity, moveDirection.z);
-			animationHandler.UpdateLocomotion(Mathf.Clamp01(Mathf.Abs(inputHandler.verticalInput) +
-			                                                Mathf.Abs(inputHandler.horizontalInput)));
+			Debug.DrawRay(forwardCheckLocation.position, transform.forward*0.4f, Color.red,0.1f);
+			
+				rb.velocity = new Vector3(moveDirection.x, lastYVelocity, moveDirection.z);
+				animationHandler.UpdateLocomotion(Mathf.Clamp01(Mathf.Abs(inputHandler.verticalInput) +
+				                                                Mathf.Abs(inputHandler.horizontalInput)));
+			
+
+			
 		}
 	}
 }
