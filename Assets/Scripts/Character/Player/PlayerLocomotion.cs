@@ -70,7 +70,7 @@ namespace Character.Player
 				isJumping = false;
 				animationHandler.animator.SetBool("isJumping", false);
 				animationHandler.animator.SetBool("isFalling", false);
-				if (inAirTimer > 0.5f)
+				if (inAirTimer > 0.3f)
 				{
 					animationHandler.PlayTargetAnimation("Land");
 				}
@@ -115,7 +115,10 @@ namespace Character.Player
 			//rb.velocity += Vector3.up * jumpForce; 
 			lastYVelocity = -1;
 			lastYVelocity += jumpForce;
-			animationHandler.animator.SetBool("isJumping", true);
+			if (!animationHandler.animator.GetBool("isJumping"))
+			{
+				animationHandler.animator.SetBool("isJumping", true);
+			}
 		}
 
 

@@ -53,6 +53,7 @@ namespace Character
 			if (inputA)
 			{
 				inputA = false;
+				Debug.Log("Setting should jump");
 				playerLocomotion.RequestJump();
 			}
 		}
