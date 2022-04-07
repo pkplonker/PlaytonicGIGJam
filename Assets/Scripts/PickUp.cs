@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Character;
+using Character.Player;
 using UnityEngine;
 
-public class PickUp : MonoBehaviour
+public class PickUp : Interactable
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] protected float amount;
+    [SerializeField] protected bool isMajor=false;
+    
+    protected override void Interact(CharacterStats stats)
     {
-        
-    }
+        base.Interact(stats);
+        stats.GetComponent<PlayerVFXController>().Pickup(isMajor);
+        Destroy(gameObject, .2f);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
+    
+    
+    
+
 }
