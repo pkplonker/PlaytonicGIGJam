@@ -2058,16 +2058,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
+      propertyPath: airSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
       propertyPath: jumpForce
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
-      propertyPath: leapVelocity
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
-      propertyPath: fallMultiplier
-      value: 1
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5102444337088249904, guid: ba58da1381239c947ba8836c5823936d, type: 3}
       propertyPath: m_Name

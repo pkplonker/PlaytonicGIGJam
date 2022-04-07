@@ -52,6 +52,7 @@ namespace Character
 		{
 			if (inputA)
 			{
+				inputA = false;
 				playerLocomotion.RequestJump();
 			}
 		}

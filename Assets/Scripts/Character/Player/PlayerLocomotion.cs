@@ -16,6 +16,7 @@ namespace Character.Player
 		[SerializeField] private float jumpForce = 3f;
 		[SerializeField] private float leapVelocity = 0.5f;
 		[SerializeField] private float fallMultiplier = 1;
+		[SerializeField] private float airSpeed = 4;
 
 
 		[SerializeField] private Transform groundCheckLocation;
@@ -83,13 +84,13 @@ namespace Character.Player
 			isGrounded = false;
 			inAirTimer += Time.deltaTime;
 			if ((!animationHandler.animator.GetBool("isJumping") ||
-			    !animationHandler.animator.GetBool("isFalling")) && inAirTimer>0.5f)
+			     !animationHandler.animator.GetBool("isFalling")) && inAirTimer > 0.5f)
 			{
 				animationHandler.animator.SetBool("isFalling", true);
 			}
 
 
-			lastYVelocity += Physics.gravity.y* fallMultiplier;
+			lastYVelocity += Physics.gravity.y * fallMultiplier;
 			rb.AddForce(transform.forward * leapVelocity);
 		}
 
@@ -106,14 +107,14 @@ namespace Character.Player
 			{
 				Jump();
 			}
-			
 		}
 
 		private void Jump()
 		{
 			Debug.Log("Jumping");
 			//rb.velocity += Vector3.up * jumpForce; 
-			lastYVelocity +=jumpForce;
+			lastYVelocity = -1;
+			lastYVelocity += jumpForce;
 			animationHandler.animator.SetBool("isJumping", true);
 		}
 
@@ -137,11 +138,19 @@ namespace Character.Player
 			moveDirection = playerCamera.forward * inputHandler.verticalInput;
 			moveDirection += playerCamera.right * inputHandler.horizontalInput;
 			moveDirection.Normalize();
-			moveDirection.y = 0;
-			moveDirection *= moveSpeed;
+			moveDirection.y = -0.5f;
+			if (Physics.Raycast(groundCheckLocation.position, Vector3.down, out RaycastHit hit, 0.4f))
+			{
+				moveDirection *= moveSpeed;
+			}
+			else
+			{
+				moveDirection *= airSpeed;
+			}
+
 			moveDirection = Vector3.ProjectOnPlane(moveDirection, normalVector);
-			rb.velocity = moveDirection;
-			rb.velocity = new Vector3(rb.velocity.x, lastYVelocity, rb.velocity.z);
+			//rb.velocity = moveDirection;
+			rb.velocity = new Vector3(moveDirection.x, lastYVelocity, moveDirection.z);
 			animationHandler.UpdateLocomotion(Mathf.Clamp01(Mathf.Abs(inputHandler.verticalInput) +
 			                                                Mathf.Abs(inputHandler.horizontalInput)));
 		}

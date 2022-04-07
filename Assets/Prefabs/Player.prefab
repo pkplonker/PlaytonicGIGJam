@@ -156,9 +156,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 8
   rotationSpeed: 18
-  jumpForce: 500
-  leapVelocity: 500
-  fallMultiplier: 500
+  jumpForce: 15
+  leapVelocity: 100
+  fallMultiplier: 0.04
   groundCheckLocation: {fileID: 2015593155}
   jumpsAllowed: 2
 --- !u!136 &531549383
