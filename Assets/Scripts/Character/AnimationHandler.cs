@@ -5,10 +5,9 @@ namespace Character
 {
     public class AnimationHandler : MonoBehaviour
     {
-        private Animator animator;
+        public Animator animator { get; private set; }
         private static readonly int Vertical = Animator.StringToHash("Vertical");
-        private static readonly int Horizontal = Animator.StringToHash("Horizontal");
-        private static readonly int IsInteracting = Animator.StringToHash("isInteracting");
+        
 
         protected virtual void Awake()
         {
@@ -26,6 +25,11 @@ namespace Character
         {
             if (targetAnim == "") return;
             animator.CrossFade(targetAnim, 0.2f);
+        }
+        public string GetCurrentAnimation()
+        {
+            Debug.Log(animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
+            return animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
         }
     }
 }

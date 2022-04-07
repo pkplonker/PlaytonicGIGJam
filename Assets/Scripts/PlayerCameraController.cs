@@ -38,7 +38,7 @@ public class PlayerCameraController : MonoBehaviour
 		defaultPosition = cameraTransform.localPosition.z;
 	}
 
-	private void LateUpdate()
+	private void FixedUpdate()
 	{
 		FollowTarget();
 		HandleCameraRotation(inputHandler.mouseX, inputHandler.mouseY);
