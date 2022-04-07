@@ -11,10 +11,10 @@ namespace Character.Player
 		[SerializeField] private GameObject jumpVFX;
 		[SerializeField] private GameObject landVFX;
 		[SerializeField] private GameObject walkVFX;
-		[SerializeField] private ParticleSystem attackVFX;
-		[SerializeField] private ParticleSystem rollVFX;
-		[SerializeField] private ParticleSystem minorRewardVFX;
-		[SerializeField] private ParticleSystem majorRewardVFX;
+		[SerializeField] private GameObject attackVFX;
+		[SerializeField] private GameObject rollVFX;
+		[SerializeField] private GameObject minorRewardVFX;
+		[SerializeField] private GameObject majorRewardVFX;
 		private PlayerLocomotion playerLocomotion;
 		#endregion
 

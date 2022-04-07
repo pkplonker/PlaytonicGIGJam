@@ -33,6 +33,8 @@ namespace Character.Player
 		private AnimationHandler animationHandler;
 		private Transform playerCamera;
 		private Rigidbody rb;
+		private CharacterStats stats;
+
 		private Vector3 moveDirection;
 		private Vector3 targetPosition;
 		private Vector3 normalVector;
@@ -60,16 +62,17 @@ namespace Character.Player
 			playerCamera = PlayerCameraController.instance.GetComponentInChildren<Camera>().transform;
 			jumpsRemaining = jumpsAllowed;
 			rb = GetComponent<Rigidbody>();
+			stats = GetComponent<CharacterStats>();
 		}
 
 		private void FixedUpdate()
 		{
+			if (stats.canMove)
 			UpdateMovement();
 			UpdateVertical();
 			UpdateRotation();
 			HandleJump();
 			rb.velocity += new Vector3(0, lastYVelocity, 0);
-			//lastYVelocity = rb.velocity.y;
 		}
 
 		private void UpdateVertical()
