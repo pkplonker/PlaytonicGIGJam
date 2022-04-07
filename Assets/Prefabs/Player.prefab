@@ -106,8 +106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: -9.81
   moveSpeed: 10
-  rotationSpeed: 300
-  jumpSpeed: 2
+  rotationSpeed: 18
+  jumpSpeed: 10
 --- !u!1001 &1345058432673735389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ac9dc5dc9e2923409b60168528903dd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: -1.096
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ac9dc5dc9e2923409b60168528903dd, type: 3}
       propertyPath: m_LocalPosition.z
