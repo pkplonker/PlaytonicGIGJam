@@ -14,19 +14,17 @@ namespace Character.Player
 
 		[SerializeField] private float moveSpeed;
 		[SerializeField] private float rotationSpeed;
-		[SerializeField] private float jumpAmount = 20f;
+		[SerializeField] private float jumpHeight = 3f;
 		[SerializeField] private Transform groundCheckLocation;
-		private Vector3 moveDirection;
 		private InputHandler inputHandler;
 		private AnimationHandler animationHandler;
 		private Transform playerCamera;
-		private Vector3 moveVelocity;
-		[SerializeField] private float jumpTime = 1f;
-		private Coroutine jumpCor;
+		private Vector3 moveDirection;
 		private int jumpsRemaining = 0;
 		[SerializeField] private int jumpsAllowed;
 		private bool isJumping;
-		 private bool isGrounded;
+		private bool isGrounded;
+
 		#endregion
 
 		private void Awake()
@@ -49,57 +47,39 @@ namespace Character.Player
 		{
 			Debug.DrawLine(groundCheckLocation.position, groundCheckLocation.position - new Vector3(0, 0.3f, 0),
 				Color.red, 0.1f);
-			if (!Physics.Raycast(groundCheckLocation.position, Vector3.down, 0.3f)) return false;
+			if (!Physics.Raycast(groundCheckLocation.position, Vector3.down, 0.3f))
+			{
+				return false;
+			}
+
 			jumpsRemaining = jumpsAllowed;
 			isJumping = false;
 			return true;
-
 		}
 
-	
 
 		public void HandleJump()
 		{
-
 			if (isGrounded)
 			{
-				jumpCor = StartCoroutine(JumpCor());
+				Jump();
 			}
-			else if(isJumping && jumpsRemaining>0 )
+			else if (isJumping && jumpsRemaining > 0)
 			{
-				jumpCor = StartCoroutine(JumpCor());
-
+				Jump();
 			}
-
 		}
 
-		IEnumerator JumpCor()
+		private void Jump()
 		{
-			isJumping = true;
+			controller.Move(new Vector3(0, Mathf.Sqrt(jumpHeight*gravity*-1), 0));
 			jumpsRemaining--;
-			float jumpTimer = jumpTime;
-			float jumpAmountRemaining = jumpAmount;
-			controller.slopeLimit = 90f;
-			while ( jumpTimer>0&& jumpAmountRemaining>=0)
-			{
-				
-				jumpTimer -= Time.deltaTime;
-				jumpAmountRemaining -= Time.deltaTime;
-				controller.Move(new Vector3(0, Mathf.Sqrt(-2f* gravity*jumpAmountRemaining)));
-				/*if (isGrounded)
-				{
-					jumpCor = null;
+			isJumping = true;
+			animationHandler.PlayTargetAnimation("Jump");
 
-					yield break;
-				}*/
-				
-				yield return null;
-			}
-			controller.slopeLimit = 45f;
-
-			jumpCor = null;
-	
 		}
+
+
 		private void UpdateRotation()
 		{
 			Vector3 targetDirection = Vector3.zero;
@@ -116,19 +96,19 @@ namespace Character.Player
 
 		private void UpdateMovement()
 		{
-			moveVelocity=Vector3.zero;
-			moveVelocity = playerCamera.forward * inputHandler.verticalInput;
-			moveVelocity += playerCamera.right * inputHandler.horizontalInput;
-			moveVelocity.Normalize();
-			moveVelocity.y = 0;
-			moveVelocity *= moveSpeed;
-			moveVelocity *= Time.deltaTime;
-			moveVelocity.y += gravity * Time.deltaTime;
-			if (isGrounded) moveVelocity.y = -0.5f;
+			moveDirection = Vector3.zero;
+			moveDirection = playerCamera.forward * inputHandler.verticalInput;
+			moveDirection += playerCamera.right * inputHandler.horizontalInput;
+			moveDirection.Normalize();
+			moveDirection.y = 0;
+			moveDirection *= moveSpeed;
+			moveDirection *= Time.deltaTime;
+			moveDirection.y += gravity * Time.deltaTime;
+			if (isGrounded) moveDirection.y = -0.5f;
 			animationHandler.UpdateLocomotion(Mathf.Clamp01(Mathf.Abs(inputHandler.horizontalInput) +
 			                                                Mathf.Abs(inputHandler.verticalInput)));
-			
-			controller.Move(moveVelocity);
+
+			controller.Move(moveDirection);
 		}
 	}
 }

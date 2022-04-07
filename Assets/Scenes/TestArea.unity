@@ -438,7 +438,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e3d790f95c8e584eb7c6035b5116aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 531549377}
+  targetTransform: {fileID: 531549377}
+  cameraTransform: {fileID: 502624263}
+  cameraPivotTransform: {fileID: 1757296196}
+  lookSpeed: 150
+  pivotSpeed: 100
+  followSpeed: 0.1
+  pivotRangeUpper: 35
+  pivotRangeLower: 0
 --- !u!4 &462109796
 Transform:
   m_ObjectHideFlags: 0
@@ -446,15 +453,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 462109794}
-  m_LocalRotation: {x: -0, y: 0.30823967, z: -0, w: 0.9513087}
-  m_LocalPosition: {x: -7.21, y: 5.11, z: -2.81}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1757296196}
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 35.906, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &479803963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -613,7 +620,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502624260}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.99, z: -3.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1431,15 +1438,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1757296195}
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -2.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 502624263}
   m_Father: {fileID: 462109796}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1880442869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,7 +1697,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
       propertyPath: jumpAmount
-      value: 0.1
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
+      propertyPath: jumpHeight
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
+      propertyPath: jumpsAllowed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
       propertyPath: groundCheckLocation

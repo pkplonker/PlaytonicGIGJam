@@ -7,14 +7,14 @@ namespace Character.Player
     {
 	    #region Variables
 
-	    private PlayerController playerController;
+	    public static PlayerController instance;
 
 	    #endregion
 
 	    private void Awake()
 	    {
-		    if (playerController == null) playerController = this;
-		    else Destroy(gameObject);
+		    if (instance == null) instance = this;
+		    else Destroy(this);
 	    }
     }
 }
