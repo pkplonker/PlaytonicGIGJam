@@ -45,6 +45,10 @@ namespace Character.Player
 		private int jumpsRemaining = 0;
 		private static readonly int IsJumping = Animator.StringToHash("isJumping");
 		private static readonly int IsFalling = Animator.StringToHash("isFalling");
+		public event Action OnLand;
+		public event Action OnJump;
+		public event Action<bool> OnGroundedChange;
+
 
 		#endregion
 
@@ -75,6 +79,7 @@ namespace Character.Player
 			if (Physics.Raycast(groundCheckLocation.position, Vector3.down, out RaycastHit hit, 0.4f))
 			{
 				// on ground
+				OnGroundedChange?.Invoke(true);
 				normalVector = hit.normal;
 				jumpsRemaining = jumpsAllowed;
 				isJumping = false;
@@ -83,6 +88,7 @@ namespace Character.Player
 				if (inAirTimer > 0.3f)
 				{
 					animationHandler.PlayTargetAnimation("Land");
+					OnLand?.Invoke();
 				}
 
 				inAirTimer = 0;
@@ -90,6 +96,7 @@ namespace Character.Player
 				lastYVelocity = 0;
 				return;
 			}
+			OnGroundedChange?.Invoke(false);
 
 			isGrounded = false;
 			inAirTimer += Time.deltaTime;
@@ -123,6 +130,8 @@ namespace Character.Player
 		{
 			lastYVelocity = -1;
 			lastYVelocity += jumpForce;
+			OnJump?.Invoke();
+
 			Debug.DrawRay(forwardCheckLocation.position, transform.forward * 0.4f, Color.red, 0.1f);
 			if (Physics.Raycast(forwardCheckLocation.position, transform.forward, 0.4f))
 			{

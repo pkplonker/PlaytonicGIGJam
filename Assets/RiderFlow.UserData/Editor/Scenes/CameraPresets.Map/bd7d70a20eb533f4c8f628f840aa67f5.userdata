@@ -1,4 +1,17 @@
 {
+  "718104e0187e67142983b0fd5b791aa7": {
+    "sceneGuid": "bd7d70a20eb533f4c8f628f840aa67f5",
+    "uniqueCameraId": "718104e0187e67142983b0fd5b791aa7",
+    "name": "Camera Preset",
+    "pointX": -4.28310442,
+    "pointY": 5.48207426,
+    "pointZ": 2.030055,
+    "directionX": 0.196075,
+    "directionY": 0.80452466,
+    "directionZ": -0.401754856,
+    "directionW": 0.391099185,
+    "zoom": 1.46557522
+  },
   "d6533fa9be4f382409fdeb7bb7fb66ce": {
     "sceneGuid": "bd7d70a20eb533f4c8f628f840aa67f5",
     "uniqueCameraId": "d6533fa9be4f382409fdeb7bb7fb66ce",
