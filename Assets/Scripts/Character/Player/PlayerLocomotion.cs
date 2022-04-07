@@ -32,6 +32,7 @@ namespace Character.Player
 		private Vector3 normalVector;
 		private float fallSpeed;
 		private float inAirTimer;
+		private bool shouldJump;
 
 		#endregion
 
@@ -47,16 +48,17 @@ namespace Character.Player
 
 		private void FixedUpdate()
 		{
-			UpdateVertical();
 			UpdateMovement();
+			UpdateVertical();
 			UpdateRotation();
+			HandleJump();
 		}
 
 		private void UpdateVertical()
 		{
-			Debug.DrawLine(groundCheckLocation.position, groundCheckLocation.position - new Vector3(0, 0.5f, 0),
+			Debug.DrawLine(groundCheckLocation.position, groundCheckLocation.position - new Vector3(0, 0.4f, 0),
 				Color.red, 0.1f);
-			if (Physics.Raycast(groundCheckLocation.position, Vector3.down, out RaycastHit hit, 0.5f))
+			if (Physics.Raycast(groundCheckLocation.position, Vector3.down, out RaycastHit hit, 0.4f))
 			{
 				// on ground
 				normalVector = hit.normal;
@@ -71,6 +73,7 @@ namespace Character.Player
 
 				inAirTimer = 0;
 				isGrounded = true;
+				rb.AddForce(Vector3.up*Physics.gravity.y);
 				return;
 			}
 
@@ -83,26 +86,29 @@ namespace Character.Player
 			}
 
 
-			rb.AddForce(Vector3.down * fallMultiplier);
+			rb.AddForce(Vector3.up * Physics.gravity.y* fallMultiplier);
 			rb.AddForce(transform.forward * leapVelocity);
 		}
 
-
+		public void RequestJump()
+		{
+			shouldJump = true;
+		}
 		public void HandleJump()
 		{
-			if (isGrounded)
+			if (!shouldJump) return;
+			shouldJump = false;
+			if (isGrounded || (isJumping && jumpsRemaining > 0))
 			{
 				Jump();
 			}
-			else if (isJumping && jumpsRemaining > 0)
-			{
-				Jump();
-			}
+			
 		}
 
 		private void Jump()
 		{
-			rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+			Debug.Log("Jumping");
+			rb.velocity += Vector3.up * jumpForce; 
 			animationHandler.animator.SetBool("isJumping", true);
 		}
 
