@@ -2059,15 +2059,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
       propertyPath: jumpForce
-      value: 1000
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
       propertyPath: leapVelocity
-      value: 250
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 201876728, guid: ba58da1381239c947ba8836c5823936d, type: 3}
       propertyPath: fallMultiplier
-      value: 60
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5102444337088249904, guid: ba58da1381239c947ba8836c5823936d, type: 3}
       propertyPath: m_Name

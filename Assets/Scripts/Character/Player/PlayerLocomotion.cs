@@ -33,6 +33,7 @@ namespace Character.Player
 		private float fallSpeed;
 		private float inAirTimer;
 		private bool shouldJump;
+		private float lastYVelocity;
 
 		#endregion
 
@@ -52,6 +53,8 @@ namespace Character.Player
 			UpdateVertical();
 			UpdateRotation();
 			HandleJump();
+			rb.velocity += new Vector3(0, lastYVelocity, 0);
+			//lastYVelocity = rb.velocity.y;
 		}
 
 		private void UpdateVertical()
@@ -73,7 +76,7 @@ namespace Character.Player
 
 				inAirTimer = 0;
 				isGrounded = true;
-				rb.AddForce(Vector3.up*Physics.gravity.y);
+				lastYVelocity = 0;
 				return;
 			}
 
@@ -86,7 +89,7 @@ namespace Character.Player
 			}
 
 
-			rb.AddForce(Vector3.up * Physics.gravity.y* fallMultiplier);
+			lastYVelocity += Physics.gravity.y* fallMultiplier;
 			rb.AddForce(transform.forward * leapVelocity);
 		}
 
@@ -94,7 +97,8 @@ namespace Character.Player
 		{
 			shouldJump = true;
 		}
-		public void HandleJump()
+
+		private void HandleJump()
 		{
 			if (!shouldJump) return;
 			shouldJump = false;
@@ -108,7 +112,8 @@ namespace Character.Player
 		private void Jump()
 		{
 			Debug.Log("Jumping");
-			rb.velocity += Vector3.up * jumpForce; 
+			//rb.velocity += Vector3.up * jumpForce; 
+			lastYVelocity +=jumpForce;
 			animationHandler.animator.SetBool("isJumping", true);
 		}
 
@@ -136,6 +141,7 @@ namespace Character.Player
 			moveDirection *= moveSpeed;
 			moveDirection = Vector3.ProjectOnPlane(moveDirection, normalVector);
 			rb.velocity = moveDirection;
+			rb.velocity = new Vector3(rb.velocity.x, lastYVelocity, rb.velocity.z);
 			animationHandler.UpdateLocomotion(Mathf.Clamp01(Mathf.Abs(inputHandler.verticalInput) +
 			                                                Mathf.Abs(inputHandler.horizontalInput)));
 		}
