@@ -10,32 +10,41 @@ namespace Character.Player
 
 		private CharacterController controller;
 
+		[Header("Movement Params")] [Range(0, 20)] [SerializeField]
+		private float moveSpeed;
 
-		[SerializeField] private float moveSpeed;
-		[SerializeField] private float rotationSpeed;
-		[SerializeField] private float jumpForce = 3f;
-		[SerializeField] private float leapVelocity = 0.5f;
-		[SerializeField] private float fallMultiplier = 1;
-		[SerializeField] private float airSpeed = 4;
+		[Range(0, 40)] [SerializeField] private float rotationSpeed;
 
-		[SerializeField] private Transform forwardCheckLocation;
+		[Range(0, 20)] [SerializeField] private float airSpeed = 4;
+
+		[Header("Support Transforms")] [SerializeField]
+		private Transform forwardCheckLocation;
 
 		[SerializeField] private Transform groundCheckLocation;
+
+		[Header("Gravity & Jump")] [Range(0, 20)] [SerializeField]
+		private float jumpForce = 3f;
+
+		[Range(0, 200)] [SerializeField] private float leapVelocity = 100f;
+		[Range(0, 1)] [SerializeField] private float fallMultiplier = 1;
+		[SerializeField] private int jumpsAllowed;
+
 		private InputHandler inputHandler;
 		private AnimationHandler animationHandler;
 		private Transform playerCamera;
-		private Vector3 moveDirection;
-		private int jumpsRemaining = 0;
-		[SerializeField] private int jumpsAllowed;
-		private bool isJumping;
-		private bool isGrounded;
 		private Rigidbody rb;
+		private Vector3 moveDirection;
 		private Vector3 targetPosition;
 		private Vector3 normalVector;
+		private bool isJumping;
+		private bool isGrounded;
+		private bool shouldJump;
 		private float fallSpeed;
 		private float inAirTimer;
-		private bool shouldJump;
 		private float lastYVelocity;
+		private int jumpsRemaining = 0;
+		private static readonly int IsJumping = Animator.StringToHash("isJumping");
+		private static readonly int IsFalling = Animator.StringToHash("isFalling");
 
 		#endregion
 
@@ -69,8 +78,8 @@ namespace Character.Player
 				normalVector = hit.normal;
 				jumpsRemaining = jumpsAllowed;
 				isJumping = false;
-				animationHandler.animator.SetBool("isJumping", false);
-				animationHandler.animator.SetBool("isFalling", false);
+				animationHandler.animator.SetBool(IsJumping, false);
+				animationHandler.animator.SetBool(IsFalling, false);
 				if (inAirTimer > 0.3f)
 				{
 					animationHandler.PlayTargetAnimation("Land");
@@ -84,10 +93,10 @@ namespace Character.Player
 
 			isGrounded = false;
 			inAirTimer += Time.deltaTime;
-			if ((!animationHandler.animator.GetBool("isJumping") ||
-			     !animationHandler.animator.GetBool("isFalling")) && inAirTimer > 0.5f)
+			if ((!animationHandler.animator.GetBool(IsJumping) ||
+			     !animationHandler.animator.GetBool(IsFalling)) && inAirTimer > 0.5f)
 			{
-				animationHandler.animator.SetBool("isFalling", true);
+				animationHandler.animator.SetBool(IsFalling, true);
 			}
 
 
@@ -112,19 +121,18 @@ namespace Character.Player
 
 		private void Jump()
 		{
-			Debug.Log("Jumping");
-			//rb.velocity += Vector3.up * jumpForce; 
 			lastYVelocity = -1;
 			lastYVelocity += jumpForce;
-			Debug.DrawRay(forwardCheckLocation.position, transform.forward*0.4f, Color.red,0.1f);
+			Debug.DrawRay(forwardCheckLocation.position, transform.forward * 0.4f, Color.red, 0.1f);
 			if (Physics.Raycast(forwardCheckLocation.position, transform.forward, 0.4f))
 			{
 				rb.velocity = new Vector3(0, lastYVelocity, 0);
 				animationHandler.UpdateLocomotion(0);
 			}
-			if (!animationHandler.animator.GetBool("isJumping"))
+
+			if (!animationHandler.animator.GetBool(IsJumping))
 			{
-				animationHandler.animator.SetBool("isJumping", true);
+				animationHandler.animator.SetBool(IsJumping, true);
 			}
 		}
 
@@ -159,15 +167,10 @@ namespace Character.Player
 			}
 
 			moveDirection = Vector3.ProjectOnPlane(moveDirection, normalVector);
-			//rb.velocity = moveDirection;
-			Debug.DrawRay(forwardCheckLocation.position, transform.forward*0.4f, Color.red,0.1f);
-			
-				rb.velocity = new Vector3(moveDirection.x, lastYVelocity, moveDirection.z);
-				animationHandler.UpdateLocomotion(Mathf.Clamp01(Mathf.Abs(inputHandler.verticalInput) +
-				                                                Mathf.Abs(inputHandler.horizontalInput)));
-			
-
-			
+			Debug.DrawRay(forwardCheckLocation.position, transform.forward * 0.4f, Color.red, 0.1f);
+			rb.velocity = new Vector3(moveDirection.x, lastYVelocity, moveDirection.z);
+			animationHandler.UpdateLocomotion(Mathf.Clamp01(Mathf.Abs(inputHandler.verticalInput) +
+			                                                Mathf.Abs(inputHandler.horizontalInput)));
 		}
 	}
 }
