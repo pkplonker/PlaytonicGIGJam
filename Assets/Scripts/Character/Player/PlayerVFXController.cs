@@ -56,6 +56,12 @@ namespace Character.Player
 			Destroy(obj,2f);
 		}
 
-		
+
+		public void Pickup(bool isMajor)
+		{
+			GameObject obj = Instantiate(isMajor? majorRewardVFX: minorRewardVFX , groundVFXTarget.position, groundVFXTarget.rotation);
+			obj.transform.parent = gameObject.transform;
+			Destroy(obj,2f);
+		}
 	}
 }
