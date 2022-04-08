@@ -10,20 +10,21 @@ public class SpecialItemPickup : MonoBehaviour
 {
 	[SerializeField] private CanvasGroup container;
 	[SerializeField] private ItemBase notItem;
-	private TextMeshProUGUI text;
-	private Inventory inventory;
+	[SerializeField] private TextMeshProUGUI quantityText;
+	[SerializeField] private TextMeshProUGUI nameText;
+	[SerializeField] private Image itemSprite;
 	[SerializeField] private float aliveTime;
 	[SerializeField] private float fadeSpeed;
-	[SerializeField] private Image itemSprite;
+	private Inventory inventory;
 
 	private Coroutine fadeCor;
 
 	private void Start()
 	{
-		text = GetComponentInChildren<TextMeshProUGUI>();
-		text.text = "";
-		container.alpha = 0;
+		nameText.text = "";
 
+		quantityText.text = "";
+		container.alpha = 0;
 	}
 
 	private void OnEnable()
@@ -47,7 +48,8 @@ public class SpecialItemPickup : MonoBehaviour
 	private void UpdateUI(Slot slot)
 	{
 		container.alpha = 1;
-		text.text = slot.amount.ToString();
+		quantityText.text = slot.amount.ToString();
+		nameText.text = slot.item.itemName;
 		itemSprite.sprite = slot.item.itemSprite;
 		RestartCor();
 	}
