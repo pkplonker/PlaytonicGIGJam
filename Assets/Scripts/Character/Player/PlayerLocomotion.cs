@@ -25,10 +25,12 @@ namespace Character.Player
 		[Header("Gravity & Jump")] [Range(0, 20)] [SerializeField]
 		private float jumpForce = 3f;
 
+		[Range(0, 20)] [SerializeField] private float secondaryJumpForce = 4.5f;
+
 		[Range(0, 200)] [SerializeField] private float leapVelocity = 100f;
 		[Range(0, 1)] [SerializeField] private float fallMultiplier = 1;
 		[SerializeField] private int jumpsAllowed;
-
+		[SerializeField] private LayerMask groundLayer;
 		private InputHandler inputHandler;
 		private AnimationHandler animationHandler;
 		private Transform playerCamera;
@@ -51,7 +53,6 @@ namespace Character.Player
 		public event Action OnJump;
 		public event Action<bool> OnGroundedChange;
 
-
 		#endregion
 
 		private void Awake()
@@ -68,7 +69,7 @@ namespace Character.Player
 		private void FixedUpdate()
 		{
 			if (stats.canMove)
-			UpdateMovement();
+				UpdateMovement();
 			UpdateVertical();
 			UpdateRotation();
 			HandleJump();
@@ -79,7 +80,7 @@ namespace Character.Player
 		{
 			Debug.DrawLine(groundCheckLocation.position, groundCheckLocation.position - new Vector3(0, 0.4f, 0),
 				Color.red, 0.1f);
-			if (Physics.Raycast(groundCheckLocation.position, Vector3.down, out RaycastHit hit, 0.4f))
+			if (Physics.Raycast(groundCheckLocation.position, Vector3.down, out RaycastHit hit, 0.4f, groundLayer ))
 			{
 				// on ground
 				OnGroundedChange?.Invoke(true);
@@ -99,6 +100,7 @@ namespace Character.Player
 				lastYVelocity = 0;
 				return;
 			}
+
 			OnGroundedChange?.Invoke(false);
 
 			isGrounded = false;
@@ -132,7 +134,15 @@ namespace Character.Player
 		private void Jump()
 		{
 			lastYVelocity = -1;
-			lastYVelocity += jumpForce;
+			if (jumpsRemaining < jumpsAllowed)
+			{
+				lastYVelocity += secondaryJumpForce;
+			}
+			else
+			{
+				lastYVelocity += jumpForce;
+			}
+
 			jumpsRemaining--;
 			isJumping = true;
 			OnJump?.Invoke();

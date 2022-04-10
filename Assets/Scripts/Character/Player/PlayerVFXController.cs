@@ -15,12 +15,15 @@ namespace Character.Player
 		[SerializeField] private GameObject rollVFX;
 		[SerializeField] private GameObject minorRewardVFX;
 		[SerializeField] private GameObject majorRewardVFX;
+		[SerializeField] private GameObject damageVFX;
+		private CharacterStats stats;
 		private PlayerLocomotion playerLocomotion;
 		#endregion
 
 		private void Awake()
 		{
 			playerLocomotion = GetComponent<PlayerLocomotion>();
+			stats = GetComponent<CharacterStats>();
 		}
 
 		private void OnEnable()
@@ -28,6 +31,7 @@ namespace Character.Player
 			playerLocomotion.OnLand += PlayLandVFX;
 			playerLocomotion.OnJump += PlayJumpVFX;
 			playerLocomotion.OnGroundedChange += GroundChange;
+			stats.OnDamage += Damage;
 
 			
 		}
@@ -36,10 +40,15 @@ namespace Character.Player
 			playerLocomotion.OnLand -= PlayLandVFX;
 			playerLocomotion.OnJump -= PlayJumpVFX;
 			playerLocomotion.OnGroundedChange -= GroundChange;
+			stats.OnDamage -= Damage;
 
 
 		}
-
+		private void Damage()
+		{
+			GameObject obj = Instantiate(damageVFX, transform.position, transform.rotation);
+			Destroy(obj,2f);
+		}
 		private void GroundChange(bool b)
 		{
 			walkVFX.SetActive(b);

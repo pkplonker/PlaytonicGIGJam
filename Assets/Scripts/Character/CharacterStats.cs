@@ -16,6 +16,7 @@ namespace Character
         public event Action OnDeath;
         public event Action<float> OnHealthChanged;
         public event Action<float> OnStaminaChanged;
+        public event Action OnDamage;
         #endregion
 
         protected void Awake()
@@ -44,6 +45,7 @@ namespace Character
         {
             if (amount < 0) return;
             currentHealth -= amount;
+            OnDamage?.Invoke();
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
