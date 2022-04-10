@@ -51,7 +51,7 @@ public class PlayerCameraController : MonoBehaviour
 		HandleCameraCollisions();
 	}
 
-	public void FollowTarget()
+	private void FollowTarget()
 	{
 		Vector3 targetPosition = Vector3.SmoothDamp(transform.position, targetTransform.position,
 			ref cameraFollowVelocity, Time.deltaTime / followSpeed);
@@ -80,7 +80,8 @@ public class PlayerCameraController : MonoBehaviour
 		cameraTransformPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, Time.deltaTime );
 		cameraTransform.localPosition = cameraTransformPosition;
 	}
-	public void HandleCameraRotation(float mouseXInput, float mouseYInput)
+
+	private void HandleCameraRotation(float mouseXInput, float mouseYInput)
 	{
 		lookAngle += mouseXInput * lookSpeed * Time.deltaTime;
 		pivotAngle -= mouseYInput * pivotSpeed * Time.deltaTime;
