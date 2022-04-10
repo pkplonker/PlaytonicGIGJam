@@ -133,6 +133,8 @@ namespace Character.Player
 		{
 			lastYVelocity = -1;
 			lastYVelocity += jumpForce;
+			jumpsRemaining--;
+			isJumping = true;
 			OnJump?.Invoke();
 
 			Debug.DrawRay(forwardCheckLocation.position, transform.forward * 0.4f, Color.red, 0.1f);
