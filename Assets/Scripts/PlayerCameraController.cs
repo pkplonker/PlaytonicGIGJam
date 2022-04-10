@@ -13,6 +13,7 @@ public class PlayerCameraController : MonoBehaviour
 	[SerializeField] Transform targetTransform;
 	[SerializeField] Transform cameraTransform;
 	[SerializeField] Transform cameraPivotTransform;
+	private float cameraCollisionCheckRadius = 0.4f;
 
 	[Header("Camera Movement")] [SerializeField] [Range(2, 300)]
 	float lookSpeed = 0.1f;
@@ -20,12 +21,17 @@ public class PlayerCameraController : MonoBehaviour
 	[SerializeField] [Range(2, 300)] float pivotSpeed = 0.03f;
 	[SerializeField] [Range(2, 300)] float followSpeed = 0.1f;
 	[SerializeField] [Range(0.01f, 100f)] float pivotRangeUpper = 35f;
-	[SerializeField] [Range(-0f, -100f)] float pivotRangeLower = -35f;
+	[SerializeField] [Range(-50f, 50f)] float pivotRangeLower = -35f;
+	
+	[SerializeField] [Range(0.01f, 1f)] private float cameraCollisionOffset = 0.2f;
+	[SerializeField] [Range(0.01f, 1f)] private float minimumCollisionOffset = 0.2f;
 	private Vector3 cameraFollowVelocity;
 	private float defaultPosition;
 	private float pivotAngle;
 	private float lookAngle;
 	private InputHandler inputHandler;
+	private float targetPosition;
+	private Vector3 cameraTransformPosition;
 
 	#endregion
 
@@ -42,6 +48,7 @@ public class PlayerCameraController : MonoBehaviour
 	{
 		FollowTarget();
 		HandleCameraRotation(inputHandler.mouseX, inputHandler.mouseY);
+		HandleCameraCollisions();
 	}
 
 	public void FollowTarget()
@@ -52,6 +59,27 @@ public class PlayerCameraController : MonoBehaviour
 		transform.position = targetPosition;
 	}
 
+	private void HandleCameraCollisions()
+	{
+		targetPosition = defaultPosition;
+		RaycastHit hit;
+		Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
+		direction.Normalize();
+		if (Physics.SphereCast(cameraPivotTransform.position, cameraCollisionCheckRadius, direction, out hit,
+			Mathf.Abs(targetPosition)))
+		{
+			float dis = Vector3.Distance(cameraPivotTransform.position, hit.point);
+			targetPosition = -(dis - cameraCollisionOffset);
+		}
+
+		if (Mathf.Abs(targetPosition) < minimumCollisionOffset)
+		{
+			targetPosition = -minimumCollisionOffset;
+		}
+
+		cameraTransformPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, Time.deltaTime );
+		cameraTransform.localPosition = cameraTransformPosition;
+	}
 	public void HandleCameraRotation(float mouseXInput, float mouseYInput)
 	{
 		lookAngle += mouseXInput * lookSpeed * Time.deltaTime;
