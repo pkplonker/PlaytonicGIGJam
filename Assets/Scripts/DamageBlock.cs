@@ -7,7 +7,6 @@ using UnityEngine;
 public class DamageBlock : MonoBehaviour
 {
 	[SerializeField] private float damageAmount = 10f;
-	[SerializeField] private GameObject effects;
 	private void OnTriggerEnter(Collider other)
 	{
 		CharacterStats stats = other.GetComponent<CharacterStats>();

@@ -69,11 +69,20 @@ namespace Character.Player
 		private void FixedUpdate()
 		{
 			if (stats.canMove)
+			{
 				UpdateMovement();
-			UpdateVertical();
-			UpdateRotation();
-			HandleJump();
-			rb.velocity += new Vector3(0, lastYVelocity, 0);
+				UpdateVertical();
+				UpdateRotation();
+				HandleJump();
+				rb.velocity += new Vector3(0, lastYVelocity, 0);
+			}
+			else
+			{
+				animationHandler.UpdateLocomotion(0);
+				animationHandler.animator.Play("Empty");
+				rb.velocity = Vector3.zero;
+			}
+			
 		}
 
 		private void UpdateVertical()

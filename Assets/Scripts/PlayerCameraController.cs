@@ -32,7 +32,7 @@ public class PlayerCameraController : MonoBehaviour
 	private InputHandler inputHandler;
 	private float targetPosition;
 	private Vector3 cameraTransformPosition;
-
+	private CharacterStats stats;
 	#endregion
 
 	private void Awake()
@@ -41,11 +41,13 @@ public class PlayerCameraController : MonoBehaviour
 		else Destroy(gameObject);
 		Cursor.visible = false;
 		inputHandler = PlayerController.instance.GetComponent<InputHandler>();
+		stats = inputHandler.GetComponent<CharacterStats>();
 		defaultPosition = cameraTransform.localPosition.z;
 	}
 
 	private void FixedUpdate()
 	{
+		if (!stats.canMove) return;
 		FollowTarget();
 		HandleCameraRotation(inputHandler.mouseX, inputHandler.mouseY);
 		HandleCameraCollisions();
