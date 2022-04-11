@@ -143,6 +143,7 @@ namespace Character.Player
 		private void Jump()
 		{
 			lastYVelocity = -1;
+			transform.parent = null;
 			if (jumpsRemaining < jumpsAllowed)
 			{
 				lastYVelocity += secondaryJumpForce;
