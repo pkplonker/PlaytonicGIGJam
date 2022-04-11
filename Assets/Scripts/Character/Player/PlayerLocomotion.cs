@@ -29,6 +29,7 @@ namespace Character.Player
 
 		[Range(0, 200)] [SerializeField] private float leapVelocity = 100f;
 		[Range(0, 1)] [SerializeField] private float fallMultiplier = 1;
+
 		[SerializeField] private int jumpsAllowed;
 		[SerializeField] private LayerMask groundLayer;
 		private InputHandler inputHandler;
@@ -68,10 +69,11 @@ namespace Character.Player
 
 		private void FixedUpdate()
 		{
+			UpdateVertical();
+
 			if (stats.canMove && !stats.isDead)
 			{
 				UpdateMovement();
-				UpdateVertical();
 				UpdateRotation();
 				HandleJump();
 				rb.velocity += new Vector3(0, lastYVelocity, 0);
@@ -206,5 +208,7 @@ namespace Character.Player
 			animationHandler.UpdateLocomotion(Mathf.Clamp01(Mathf.Abs(inputHandler.verticalInput) +
 			                                                Mathf.Abs(inputHandler.horizontalInput)));
 		}
+
+	
 	}
 }

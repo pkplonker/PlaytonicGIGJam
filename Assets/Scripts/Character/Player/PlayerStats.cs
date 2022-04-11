@@ -18,5 +18,14 @@ namespace Character.Player
             animator.Play("Death");
             animator.SetBool(IsDead,true);
         }
+
+        public override void Revive()
+        {
+	        base.Revive();
+            animator.SetBool("isDead",false);
+            animator.Play("Empty");
+        }
+        
+        
     }
 }
