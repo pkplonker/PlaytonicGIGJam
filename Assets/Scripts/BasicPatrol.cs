@@ -9,6 +9,7 @@ public class BasicPatrol : MonoBehaviour
     [SerializeField] private Transform model;
     private int index;
     [SerializeField] private float moveSpeed;
+    private Rigidbody rb;
     private Transform[] patrolPoints;
 
     private void Start()
@@ -23,7 +24,6 @@ public class BasicPatrol : MonoBehaviour
             UpdateTarget();
             return;
         }
-
         model.position = Vector3.MoveTowards(model.position, patrolPoints[index].position, moveSpeed/30000 / Time.deltaTime);
 
     }
