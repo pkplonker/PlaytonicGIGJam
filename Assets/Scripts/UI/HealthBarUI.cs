@@ -12,6 +12,7 @@ namespace UI
 		{
 			base.Start();
 			slider.maxValue = stats.maxHealth;
+			slider.value = stats.currentHealth;
 
 		}
 

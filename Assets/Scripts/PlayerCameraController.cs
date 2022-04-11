@@ -25,6 +25,7 @@ public class PlayerCameraController : MonoBehaviour
 	
 	[SerializeField] [Range(0.01f, 1f)] private float cameraCollisionOffset = 0.2f;
 	[SerializeField] [Range(0.01f, 1f)] private float minimumCollisionOffset = 0.2f;
+	[SerializeField] private float cameraCollisionSpeed = 5f;
 	private Vector3 cameraFollowVelocity;
 	private float defaultPosition;
 	private float pivotAngle;
@@ -79,7 +80,7 @@ public class PlayerCameraController : MonoBehaviour
 			targetPosition = -minimumCollisionOffset;
 		}
 
-		cameraTransformPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, Time.deltaTime );
+		cameraTransformPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, cameraCollisionSpeed * Time.deltaTime );
 		cameraTransform.localPosition = cameraTransformPosition;
 	}
 

@@ -10,8 +10,9 @@ namespace Character
 		[SerializeField] private string characterName;
 		[SerializeField] public float maxHealth=100f;
 		[SerializeField] public float maxStamina=100f;
-		private float currentHealth;
-		private float currentStamina;
+		public bool isDead { get; private set; }
+		public float currentHealth { get; private set; }
+		public float currentStamina{ get; private set; }
 		public bool canMove { get; private set; } = true;
 		public event Action OnDeath;
 		public event Action<float> OnHealthChanged;
@@ -24,9 +25,11 @@ namespace Character
 		{
 			currentHealth = maxHealth;
 			currentStamina = maxStamina;
+			OnHealthChanged?.Invoke(currentHealth);
+
 		}
 
-		private void Start()
+		protected virtual void Start()
 		{
 			OnHealthChanged?.Invoke(currentHealth);
 			OnStaminaChanged?.Invoke(currentStamina);
@@ -36,6 +39,7 @@ namespace Character
 		{
 			canMove = false;
 			OnDeath?.Invoke();
+			isDead = true;
 		}
 
 		public virtual void Heal(float amount)

@@ -68,7 +68,7 @@ namespace Character.Player
 
 		private void FixedUpdate()
 		{
-			if (stats.canMove)
+			if (stats.canMove && !stats.isDead)
 			{
 				UpdateMovement();
 				UpdateVertical();
@@ -79,7 +79,7 @@ namespace Character.Player
 			else
 			{
 				animationHandler.UpdateLocomotion(0);
-				animationHandler.animator.Play("Empty");
+				if(!stats.isDead) animationHandler.animator.Play("Empty");
 				rb.velocity = Vector3.zero;
 			}
 			
